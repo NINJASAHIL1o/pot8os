@@ -4,11 +4,15 @@ var pImage,bullet
 var imposter
 var gameState="1"
 var imposterGroup,bulletGroup
-
+var jewl;
+var wallGroup
+var wall5;
+var move= true;
 function preload(){
   pImage= loadImage("AmongUs1.png");
   pImage2= loadImage("AmongUs2.png");
   IImage1= loadImage("Imposter1.png");
+  jewl1= loadImage("jewl.png");
 }
 
 
@@ -19,6 +23,12 @@ function setup(){
   player.addImage(pImage)
   imposterGroup=createGroup();
   bulletGroup=createGroup();
+  wallGroup=createGroup();
+  jewl=createSprite(100,500);
+  jewl.addImage(jewl1)
+  
+
+  
 }
 
 
@@ -96,14 +106,44 @@ function draw(){
 
     }
 
+    if(keyDown("f")){
+
+      wall5=createSprite(mouseX,mouseY,50,50)
+      wall5.shapeColor=("lime");
+      wallGroup.add(wall5)
+
+    }
+
+    if(keyDown("r")){
+
+      wall5.destroy();
+
+    }
+
+
   }
 
-  
 
-  
+ 
 
+  for(var i = 0;i<imposterGroup.length;i++){
 
-  
+    if(imposterGroup.get(i).isTouching(wallGroup)){
+
+     
+      wallGroup.destroyEach()
+      
+      move= true
+      
+    }
+
+    else{
+
+      imposterGroup.velocityX=-3
+
+    }
+
+  }
 
 
 
@@ -113,7 +153,7 @@ function draw(){
 
   drawSprites();
 
-
+  emrald();
 
 
 
@@ -125,8 +165,6 @@ function draw(){
 
 function impos(){
 
-
-  
   if(frameCount %100===0 ){
 
     imposter=createSprite(2200,random(100,900))
@@ -151,3 +189,18 @@ function shootBullet(){
 
  
 }
+
+
+function emrald(){
+
+  if(imposterGroup.isTouching(jewl)){
+
+    imposterGroup.setVelocityXEach(0);
+    textSize(30);
+    fill("black")
+    text("Game Over", 300,200)
+
+  }
+
+}
+
